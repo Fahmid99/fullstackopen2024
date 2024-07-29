@@ -9,7 +9,9 @@ function Total({ parts }) {
 
   return (
     <div>
-      <p>Number of exercises {totalExercises}</p>
+      <p>
+        <b>Number of exercises {totalExercises}</b>
+      </p>
     </div>
   );
 }
