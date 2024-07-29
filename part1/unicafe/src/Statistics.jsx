@@ -1,4 +1,5 @@
 import React from "react";
+import StatisticLine from "./StatisticLine";
 
 function Statistics({ good, bad, neutral, score }) {
   return (
@@ -8,9 +9,15 @@ function Statistics({ good, bad, neutral, score }) {
         <p>No feedback given</p>
       ) : (
         <ul>
-          <li>good {good}</li>
-          <li>neutral {neutral}</li>
-          <li>bad {bad}</li>
+          <li>
+            <StatisticLine text="good" value={good} />
+          </li>
+          <li>
+            <StatisticLine text="bad" value={bad} />
+          </li>
+          <li>
+            <StatisticLine text="neutral" value={neutral} />
+          </li>
           <li>all {good + bad + neutral} </li>
           <li>average {score / (good + bad + neutral)}</li>
           <li>positive {good / (good + bad + neutral)} % </li>
