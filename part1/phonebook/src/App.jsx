@@ -1,17 +1,21 @@
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas" }]);
+  const [persons, setPersons] = useState([{ id: 1, name: "Arto Hellas" }]);
   const [newName, setNewName] = useState("");
 
   const addNewPerson = (e) => {
     e.preventDefault();
+    if (persons.some((person) => person.name === newName)) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      const personObj = {
+        id: Math.floor(Math.random()),
+        name: newName,
+      };
 
-    const personObj = {
-      name: newName,
-    };
-
-    setPersons(persons.concat(personObj));
+      setPersons(persons.concat(personObj));
+    }
   };
 
   const handleNameInput = (e) => {
