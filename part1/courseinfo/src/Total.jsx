@@ -1,12 +1,15 @@
 import React from "react";
 
 function Total({ parts }) {
+  const initialValue = 0;
+  const totalExercises = parts.reduce(
+    (accumulator, currentValue) => accumulator + currentValue.exercises,
+    initialValue
+  );
+
   return (
     <div>
-      <p>
-        Number of exercises{" "}
-        {parts[0].exercises + parts[1].exercises + parts[2].exercises}
-      </p>
+      <p>Number of exercises {totalExercises}</p>
     </div>
   );
 }
