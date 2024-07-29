@@ -14,6 +14,7 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [number, setNumber] = useState(0);
+  const [mostVotes, setMostVotes] = useState(0);
   const points = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0 };
   const [votes, setVotes] = useState(points);
   const handleRandom = () => {
@@ -24,7 +25,9 @@ const App = () => {
     const copy = { ...votes };
     copy[number] += 1;
     setVotes(copy);
-    console.log(votes);
+    if (copy[number] > copy[mostVotes]) {
+      setMostVotes(number)
+    }
   };
   return (
     <div
@@ -34,7 +37,8 @@ const App = () => {
         flexDirection: "column",
         width: "50%",
       }}
-    >
+    > 
+    <h1>Anecdote of the day!</h1>
       <div>
         <button onClick={handleRandom}>Generate random anecdote</button>
         <button onClick={handleVote}>Vote</button>
@@ -42,6 +46,10 @@ const App = () => {
       <div style={{ marginTop: "1em" }}>
         {anecdotes[number]} {votes[number]}
       </div>
+      <h1>Anecdote with most votes</h1>
+      <p>
+        {anecdotes[mostVotes]} {votes[mostVotes]}
+      </p>
     </div>
   );
 };
