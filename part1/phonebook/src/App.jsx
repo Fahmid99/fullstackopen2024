@@ -14,7 +14,9 @@ const App = () => {
 
   const personsToShow = showAll
     ? persons
-    : persons.filter((person) => person.name === filteredName);
+    : persons.filter((person) =>
+        person.name.toLowerCase().includes(filteredName.toLowerCase())
+      );
 
   const addNewPerson = (e) => {
     e.preventDefault();
@@ -41,17 +43,25 @@ const App = () => {
 
   const handleFilter = (e) => {
     setFilteredName(e.target.value);
-    setShowAll(false)
+
+    if (e.target.value) {
+      setShowAll(false);
+      console.log(showAll);
+    } else {
+      setShowAll(true);
+      console.log(showAll);
+    }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-    filter shown with<input onChange={handleFilter}/>
+      filter shown with
+      <input value={filteredName} onChange={handleFilter} />
       <form onSubmit={addNewPerson}>
         <div>
-          name: <input onChange={handleNameInput} />
-          number: <input onChange={handleNumberInput} />
+          name: <input value={newName} onChange={handleNameInput} />
+          number: <input value={newNumber} onChange={handleNumberInput} />
         </div>
         <div>
           <button type="submit">add</button>
@@ -59,7 +69,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {personsToShow.map((person) => (
-        <p key={person.name}>
+        <p key={person.id}>
           {person.name} {person.number}
         </p>
       ))}
