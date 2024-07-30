@@ -3,6 +3,7 @@ import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
 import axios from "axios";
+import personService from "./services/persons";
 const App = () => {
   const [persons, setPersons] = useState([]);
 
@@ -12,7 +13,7 @@ const App = () => {
   const [showAll, setShowAll] = useState(true);
 
   useEffect(() => {
-    axios.get("http://localhost:3002/persons").then((response) => {
+    personService.getAll().then((response) => {
       setPersons(response.data);
     });
   }, []);
@@ -29,11 +30,15 @@ const App = () => {
       alert(`${newName} is already added to phonebook`);
     } else {
       const personObj = {
-        id: Math.floor(Math.random()),
         name: newName,
         number: newNumber,
+        id: Math.floor(Math.random() * 1000).toString(),
       };
-      setPersons(persons.concat(personObj));
+      personService.create(personObj).then((response) => {
+        setPersons(persons.concat(response.data));
+        setNewName("");
+        setnewNumber("");
+      });
     }
   };
 
@@ -55,6 +60,13 @@ const App = () => {
     }
   };
 
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete?")) {
+      personService.deletePerson(id);
+      setPersons(persons.filter((person) => person.id !== id));
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -68,7 +80,10 @@ const App = () => {
         handleNumberInput={handleNumberInput}
       />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons
+        personsToShow={personsToShow}
+        handleDelete={(id) => handleDelete(id)}
+      />
     </div>
   );
 };
