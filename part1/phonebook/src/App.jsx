@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Filter from "./Filter";
+import PersonForm from "./PersonForm";
+import Persons from "./Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -28,7 +31,6 @@ const App = () => {
         name: newName,
         number: newNumber,
       };
-
       setPersons(persons.concat(personObj));
     }
   };
@@ -46,33 +48,25 @@ const App = () => {
 
     if (e.target.value) {
       setShowAll(false);
-      console.log(showAll);
     } else {
       setShowAll(true);
-      console.log(showAll);
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
-      filter shown with
-      <input value={filteredName} onChange={handleFilter} />
-      <form onSubmit={addNewPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameInput} />
-          number: <input value={newNumber} onChange={handleNumberInput} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Filter filteredName={filteredName} handleFilter={handleFilter} />
+      <h3>Add a new person</h3>
+      <PersonForm
+        addNewPerson={addNewPerson}
+        newName={newName}
+        newNumber={newNumber}
+        handleNameInput={handleNameInput}
+        handleNumberInput={handleNumberInput}
+      />
       <h2>Numbers</h2>
-      {personsToShow.map((person) => (
-        <p key={person.id}>
-          {person.name} {person.number}
-        </p>
-      ))}
+      <Persons personsToShow={personsToShow} />
     </div>
   );
 };
