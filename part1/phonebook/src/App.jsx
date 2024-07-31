@@ -4,6 +4,7 @@ import PersonForm from "./PersonForm";
 import Persons from "./Persons";
 import axios from "axios";
 import personService from "./services/persons";
+import Notification from "./Notification";
 const App = () => {
   const [persons, setPersons] = useState([]);
 
@@ -11,7 +12,8 @@ const App = () => {
   const [filteredName, setFilteredName] = useState("");
   const [newNumber, setnewNumber] = useState("");
   const [showAll, setShowAll] = useState(true);
-
+  const [message, setMessage] = useState("");
+  const [notificationType, setNotificationType] = useState("");
   useEffect(() => {
     personService.getAll().then((response) => {
       setPersons(response.data);
@@ -27,7 +29,7 @@ const App = () => {
   const addNewPerson = (e) => {
     e.preventDefault();
     const existingPerson = persons.find((person) => person.name === newName);
-    const updatedPerson = { ...existingPerson, number: newNumber};
+    const updatedPerson = { ...existingPerson, number: newNumber };
     if (
       existingPerson &&
       confirm(
@@ -43,6 +45,11 @@ const App = () => {
             )
           );
         });
+      setMessage(`Updated number for ${newName}`);
+      setNotificationType("success");
+      setTimeout(() => {
+        setMessage(null);
+      }, 5000);
     } else {
       const personObj = {
         name: newName,
@@ -53,6 +60,11 @@ const App = () => {
         setPersons(persons.concat(response.data));
         setNewName("");
         setnewNumber("");
+        setMessage(`Added ${newName}`);
+        setNotificationType("success");
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       });
     }
   };
@@ -85,6 +97,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} notificationType={notificationType} />
       <Filter filteredName={filteredName} handleFilter={handleFilter} />
       <h3>Add a new person</h3>
       <PersonForm
