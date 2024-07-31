@@ -1,22 +1,24 @@
 import React from "react";
-
-function Country({ name, capital, area, languages, flag }) {
+import Weather from "./Weather";
+function Country({ country, weather }) {
+  let c = country;
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <h1>{name}</h1>
+      <h1>{c.name.common}</h1>
       <p>
-        <b>Captial</b> {capital}
+        <b>Captial</b> {c.capital}
       </p>
       <p>
-        <b>Area</b> {area}
+        <b>Area</b> {c.area}
       </p>
       <h3>languages:</h3>
       <ul>
-        {Object.values(languages).map((language) => (
+        {Object.values(c.languages).map((language) => (
           <li key={language}>{language}</li>
         ))}
       </ul>
-      <img src={flag} width={"200px"}></img>
+      <img src={c.flags.svg} width={"200px"}></img>
+      <Weather country={country} weather={weather} />
     </div>
   );
 }

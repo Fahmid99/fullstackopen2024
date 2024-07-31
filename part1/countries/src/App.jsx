@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import countryService from "./services/countries";
 import "./App.css";
 import Country from "./Country";
-
+const api_key = "";
 function App() {
   const [countries, setCountries] = useState([]);
   const [filteredCountry, setFilteredCountry] = useState("");
   const [selectedCountry, setSelectedCountry] = useState(null);
+  const [weather, setWeather] = useState(null);
 
   useEffect(() => {
     countryService.getAll().then((response) => {
@@ -27,7 +28,24 @@ function App() {
     setSelectedCountry(country);
   };
 
-  const countryToDisplay = countriesToShow.length === 1 ? countriesToShow[0] : selectedCountry;
+  const countryToDisplay =
+    countriesToShow.length === 1 ? countriesToShow[0] : selectedCountry;
+
+  useEffect(() => {
+    if (countryToDisplay) {
+      countryService
+        .getWeather(
+          countryToDisplay.latlng[0],
+          countryToDisplay.latlng[1],
+          api_key
+        )
+        .then((response) => {
+          setWeather(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [countryToDisplay]);
 
   return (
     <div>
@@ -40,17 +58,11 @@ function App() {
           too many matches, specify another filter
         </div>
       ) : countryToDisplay ? (
-        <Country
-          name={countryToDisplay.name.common}
-          capital={countryToDisplay.capital}
-          area={countryToDisplay.area}
-          languages={countryToDisplay.languages}
-          flag={countryToDisplay.flags.svg}
-        />
+        <Country country={countryToDisplay} weather={weather} />
       ) : (
         countriesToShow.map((country) => (
           <p key={country.name.common}>
-            {country.name.common}{" "}
+            {country.name.common}
             <button onClick={() => handleShowCountry(country)}>show</button>
           </p>
         ))
