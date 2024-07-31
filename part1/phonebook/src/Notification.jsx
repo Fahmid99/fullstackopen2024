@@ -9,7 +9,7 @@ function Notification({ notificationType, message }) {
     }
   };
 
-  return message === null || message === ""? null : (
+  return message === null || message === "" ? null : (
     <div
       className={notificationType}
       style={{
