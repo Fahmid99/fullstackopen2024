@@ -44,6 +44,15 @@ const App = () => {
               person.id !== existingPerson.id ? person : response.data
             )
           );
+        })
+        .catch((error) => {
+          setMessage(
+            `Information of ${newName} has already been removed from server`
+          );
+          setNotificationType("error");
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
         });
       setMessage(`Updated number for ${newName}`);
       setNotificationType("success");
